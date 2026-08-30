@@ -1,0 +1,62 @@
+server:
+  port: ${SERVER_PORT}
+  server-header: ""
+  forward-headers-strategy: framework
+  tomcat:
+    mbeanregistry:
+      enabled: true
+    threads:
+      min-spare: 15
+      max: 250
+
+spring:
+  application:
+    name: clinico
+  datasource:
+    datasource:
+    url: jdbc:oracle:thin:@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = ${DB_HOST})(PORT = ${DB_PORT})) (CONNECT_DATA = (SERVER = DEDICATED) (${DB_CONNECTION_TYPE} = ${DB_CONNECTION_VALUE})))
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  servlet:
+    multipart:
+      max-file-size: 5GB   # Tamaño máximo por archivo
+      max-request-size: 5GB # Tamaño máximo total de la petición
+    webflux:
+      max-in-memory-size: 16MB
+  jackson:
+    serialization:
+      fail-on-self-references: false
+  
+app:
+  cors:
+    allowed-origins: ${ORIGINS_URL}
+  security:
+    jwt-secret: ${JWT_SECRET}
+    expiration: ${TOKEN_EXPIRATION}
+
+logging:
+  level:
+    root: ${LOG_LEVEL}
+    org:
+      springframework:
+        security:
+          config:
+            annotation:
+              authentication:
+                configuration:
+                  InitializeUserDetailsBeanManagerConfigurer: ERROR
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: off
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    # 1. Le dice a la página HTML dónde buscar su configuración usando una ruta relativa
+    config-url: ../api-docs/swagger-config
+    # 2. Le dice a la configuración dónde descargar el JSON de tus endpoints
+    url: ../api-docs
+    disable-swagger-default-url: true
+    operationsSorter: method
+    display-request-duration: true
