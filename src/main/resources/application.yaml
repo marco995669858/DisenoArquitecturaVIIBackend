@@ -11,12 +11,12 @@ server:
 
 spring:
   application:
-    name: clinico
+    name: dataverse-rentals
   datasource:
-    datasource:
-    url: jdbc:oracle:thin:@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = ${DB_HOST})(PORT = ${DB_PORT})) (CONNECT_DATA = (SERVER = DEDICATED) (${DB_CONNECTION_TYPE} = ${DB_CONNECTION_VALUE})))
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
       max-file-size: 5GB   # Tamaño máximo por archivo
@@ -45,9 +45,6 @@ logging:
               authentication:
                 configuration:
                   InitializeUserDetailsBeanManagerConfigurer: ERROR
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: off
 
 springdoc:
   api-docs:

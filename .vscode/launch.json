@@ -6,10 +6,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "ClinicoApplication",
+            "name": "DataverseRentalsApplication",
             "request": "launch",
-            "mainClass": "com.pe.consultorio.clinico.ClinicoApplication",
-            "projectName": "clinico",
+            "mainClass": "com.dataverse.rentals.DataverseRentalsApplication",
+            "projectName": "dataverse-rentals",
             "envFile": "${workspaceFolder}/.env"
         },
         {
