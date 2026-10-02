@@ -10,6 +10,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import java.time.Duration;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,6 +34,7 @@ import com.dataverse.rentals.security.AuditContext;
 import com.dataverse.rentals.security.CustomUserDetails;
 import com.dataverse.rentals.security.CustomUserDetailsService;
 import com.dataverse.rentals.security.JwtService;
+import com.dataverse.rentals.security.LoginAttemptTracker;
 import com.dataverse.rentals.security.TotpUtil;
 
 /**
@@ -57,6 +60,8 @@ class ImplUsuarioTest {
     private AuditContext audit;
     @Mock
     private TotpUtil totpUtil;
+    @Mock
+    private LoginAttemptTracker intentos;
 
     @InjectMocks
     private ImplUsuario servicio;
@@ -65,12 +70,19 @@ class ImplUsuarioTest {
         return new CustomUserDetails(new UsuarioLoginDTO(idUsuario, username, "hash-no-relevante", true, "ROLE_ADMINISTRADOR"));
     }
 
+    /** El guard de bloqueo corre antes que nada en login(); sin esto, cualquier prueba de login tira NPE. */
+    private void sinBloqueoPrevio() {
+        when(audit.ipActual()).thenReturn("127.0.0.1");
+        when(intentos.tiempoRestanteBloqueo(anyString())).thenReturn(Duration.ZERO);
+    }
+
     // ------------------------------------------------------------------
     // Login + MFA obligatorio por defecto
     // ------------------------------------------------------------------
 
     @Test
     void loginSinMfaHabilitadoEntregaElTokenDeUnaVez() {
+        sinBloqueoPrevio();
         when(detailsService.loadUserByUsername("admin")).thenReturn(usuario(1, "admin"));
         when(mapper.obtenerEstadoMfaInterno(1)).thenReturn(new EstadoMfaInternoDTO(false, null, false));
         when(jwtService.generateToken(any(), eq(1))).thenReturn("TOKEN-REAL");
@@ -85,6 +97,7 @@ class ImplUsuarioTest {
 
     @Test
     void loginConMfaHabilitadoSinConfirmarGeneraUnSecretoNuevoYPideConfigurar() {
+        sinBloqueoPrevio();
         when(detailsService.loadUserByUsername("admin")).thenReturn(usuario(1, "admin"));
         when(mapper.obtenerEstadoMfaInterno(1)).thenReturn(new EstadoMfaInternoDTO(true, null, false));
         when(totpUtil.generarSecreto()).thenReturn("SECRETO-NUEVO");
@@ -106,6 +119,7 @@ class ImplUsuarioTest {
 
     @Test
     void loginConMfaYaConfirmadoNoRegeneraElSecretoYPideElCodigo() {
+        sinBloqueoPrevio();
         when(detailsService.loadUserByUsername("admin")).thenReturn(usuario(1, "admin"));
         when(mapper.obtenerEstadoMfaInterno(1)).thenReturn(new EstadoMfaInternoDTO(true, "SECRETO-VIEJO", true));
         when(jwtService.generarTokenMfaPendiente("admin", 1)).thenReturn("PENDING-TOKEN-2");
@@ -123,6 +137,7 @@ class ImplUsuarioTest {
 
     @Test
     void loginConCredencialesIncorrectasNoRevelaSiFueElUsuarioOLaClave() {
+        sinBloqueoPrevio();
         when(authenticationManager.authenticate(any())).thenThrow(new BadCredentialsException("mal"));
 
         ResponseDTO<AuthDTO> resultado = servicio.login(new LoginRequest("admin", "mala"));
@@ -133,12 +148,68 @@ class ImplUsuarioTest {
 
     @Test
     void loginConCuentaInactivaAvisaQueEstaInactivaYNoEsUnErrorDeServidor() {
+        sinBloqueoPrevio();
         when(authenticationManager.authenticate(any())).thenThrow(new DisabledException("inactivo"));
 
         ResponseDTO<AuthDTO> resultado = servicio.login(new LoginRequest("cobranzas", "clave"));
 
         assertThat(resultado.isError()).isTrue();
         assertThat(resultado.getMensaje()).contains("inactivo");
+    }
+
+    // ------------------------------------------------------------------
+    // Freno de fuerza bruta (LoginAttemptTracker)
+    // ------------------------------------------------------------------
+
+    @Test
+    void rechazaElLoginSiLaIpEstaBloqueadaSinSiquieraValidarCredenciales() {
+        when(audit.ipActual()).thenReturn("9.9.9.9");
+        when(intentos.tiempoRestanteBloqueo("9.9.9.9")).thenReturn(Duration.ofMinutes(3));
+        when(intentos.tiempoRestanteBloqueo("user:admin")).thenReturn(Duration.ZERO);
+
+        ResponseDTO<AuthDTO> resultado = servicio.login(new LoginRequest("admin", "Admin123!"));
+
+        assertThat(resultado.isError()).isTrue();
+        assertThat(resultado.getMensaje()).contains("Demasiados intentos");
+        verifyNoInteractions(authenticationManager);
+    }
+
+    @Test
+    void rechazaElLoginSiElUsuarioEstaBloqueadoAunquePruebeDesdeOtraIp() {
+        when(audit.ipActual()).thenReturn("8.8.8.8"); // una IP nueva, nunca bloqueada
+        when(intentos.tiempoRestanteBloqueo("8.8.8.8")).thenReturn(Duration.ZERO);
+        when(intentos.tiempoRestanteBloqueo("user:admin")).thenReturn(Duration.ofMinutes(5));
+
+        ResponseDTO<AuthDTO> resultado = servicio.login(new LoginRequest("admin", "Admin123!"));
+
+        assertThat(resultado.isError()).isTrue();
+        assertThat(resultado.getMensaje()).contains("Demasiados intentos");
+        verifyNoInteractions(authenticationManager);
+    }
+
+    @Test
+    void unaContrasenaIncorrectaRegistraElFalloPorIpYPorUsuario() {
+        sinBloqueoPrevio();
+        when(audit.ipActual()).thenReturn("5.5.5.5");
+        when(authenticationManager.authenticate(any())).thenThrow(new BadCredentialsException("mal"));
+
+        servicio.login(new LoginRequest("admin", "mala"));
+
+        verify(intentos).registrarFallo("5.5.5.5");
+        verify(intentos).registrarFallo("user:admin");
+    }
+
+    @Test
+    void unLoginExitosoLimpiaElHistorialDeIntentosDeLaIpYDelUsuario() {
+        sinBloqueoPrevio();
+        when(audit.ipActual()).thenReturn("6.6.6.6");
+        when(detailsService.loadUserByUsername("admin")).thenReturn(usuario(1, "admin"));
+        when(mapper.obtenerEstadoMfaInterno(1)).thenReturn(new EstadoMfaInternoDTO(false, null, false));
+
+        servicio.login(new LoginRequest("admin", "Admin123!"));
+
+        verify(intentos).registrarExito("6.6.6.6");
+        verify(intentos).registrarExito("user:admin");
     }
 
     // ------------------------------------------------------------------

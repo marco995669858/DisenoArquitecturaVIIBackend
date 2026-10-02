@@ -26,11 +26,15 @@ public class AuditContext {
         return null;
     }
 
+    /**
+     * Devuelve la IP real de la conexion TCP, nunca la de un header. Este
+     * backend no corre detras de un proxy propio que reescriba
+     * X-Forwarded-For con el valor real y descarte el que venga del
+     * cliente -- si se leyera ese header aca, cualquiera podria falsificar
+     * la IP que queda registrada en cada columna de auditoria (o eludir un
+     * limitador de intentos por IP) con solo mandarlo en la peticion.
+     */
     public String ipActual() {
-        String forwarded = request.getHeader("X-Forwarded-For");
-        if (forwarded != null && !forwarded.isBlank()) {
-            return forwarded.split(",")[0].trim();
-        }
         return request.getRemoteAddr();
     }
 }

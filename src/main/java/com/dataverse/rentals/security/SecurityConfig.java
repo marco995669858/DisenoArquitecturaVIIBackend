@@ -21,14 +21,17 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final PermisoAccessFilter permisoAccessFilter;
+    private final RateLimitFilter rateLimitFilter;
     private final AuthenticationProvider authenticationProvider;
 
     @Value("${app.cors.allowed-origins}")
     private String allowedOrigin;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, PermisoAccessFilter permisoAccessFilter, AuthenticationProvider authenticationProvider) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, PermisoAccessFilter permisoAccessFilter,
+            RateLimitFilter rateLimitFilter, AuthenticationProvider authenticationProvider) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.permisoAccessFilter = permisoAccessFilter;
+        this.rateLimitFilter = rateLimitFilter;
         this.authenticationProvider = authenticationProvider;
     }
 
@@ -45,6 +48,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No guardamos sesión en el servidor
                 )
                 .authenticationProvider(authenticationProvider)
+                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(permisoAccessFilter, JwtAuthenticationFilter.class);
 

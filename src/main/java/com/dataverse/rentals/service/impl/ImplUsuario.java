@@ -1,5 +1,6 @@
 package com.dataverse.rentals.service.impl;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +33,7 @@ import com.dataverse.rentals.security.AuditContext;
 import com.dataverse.rentals.security.CustomUserDetails;
 import com.dataverse.rentals.security.CustomUserDetailsService;
 import com.dataverse.rentals.security.JwtService;
+import com.dataverse.rentals.security.LoginAttemptTracker;
 import com.dataverse.rentals.security.TotpUtil;
 import com.dataverse.rentals.service.ServiceUsuario;
 import com.dataverse.rentals.util.ErrorMessages;
@@ -51,17 +53,33 @@ public class ImplUsuario implements ServiceUsuario {
     private final PasswordEncoder passwordEncoder;
     private final AuditContext audit;
     private final TotpUtil totpUtil;
+    private final LoginAttemptTracker intentos;
 
     // El Refresh Token durará 8 horas (en milisegundos)
     private static final long REFRESH_TOKEN_EXPIRATION_MS = 28800000L;
 
     @Override
     public ResponseDTO<AuthDTO> login(LoginRequest args) {
+        String claveIp = audit.ipActual();
+        String claveUsuario = "user:" + args.username().toLowerCase();
+
+        Duration bloqueo = mayor(intentos.tiempoRestanteBloqueo(claveIp), intentos.tiempoRestanteBloqueo(claveUsuario));
+        if (!bloqueo.isZero()) {
+            long minutos = Math.max(1, bloqueo.toMinutes());
+            log.warn("Login bloqueado por demasiados intentos fallidos: usuario={}, ip={}", args.username(), claveIp);
+            return new ResponseDTO<>(null, true, "Demasiados intentos fallidos. Intente nuevamente en " + minutos + " minuto(s).");
+        }
+
         try {
             // 1. Spring valida credenciales
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(args.username(), args.password())
             );
+
+            // Contraseña correcta: se limpia el historial de fallos de esta
+            // IP y de este usuario (ya no tiene sentido seguir contandolos).
+            intentos.registrarExito(claveIp);
+            intentos.registrarExito(claveUsuario);
 
             // 2. Traemos la data completa del usuario
             CustomUserDetails user = (CustomUserDetails) detailsService.loadUserByUsername(args.username());
@@ -102,6 +120,8 @@ public class ImplUsuario implements ServiceUsuario {
             return new ResponseDTO<>(data, false, "Ingrese el código de verificación en dos pasos.");
 
         } catch (BadCredentialsException e) {
+            intentos.registrarFallo(claveIp);
+            intentos.registrarFallo(claveUsuario);
             log.warn("Intento de login fallido para el usuario: {}", args.username());
             // Mensaje amigable, nunca revelamos si fue el usuario o la clave lo que falló
             return new ResponseDTO<>(null, true, "Usuario o contraseña incorrectos");
@@ -289,6 +309,10 @@ public class ImplUsuario implements ServiceUsuario {
             log.error(e.getMessage(), e);
             return new ResponseDTO<>(true, ErrorMessages.resolver(e));
         }
+    }
+
+    private Duration mayor(Duration a, Duration b) {
+        return a.compareTo(b) >= 0 ? a : b;
     }
 
     private String crearRefreshToken(Integer idUsuario) {

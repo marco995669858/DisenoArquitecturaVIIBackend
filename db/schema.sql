@@ -20,12 +20,6 @@ SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
 SET @@SESSION.SQL_LOG_BIN= 0;
 
 --
--- GTID state at the beginning of the backup 
---
-
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '27bdcb26-3097-11f1-ba24-e8bfe175558e:1-401';
-
---
 -- Table structure for table `contrato`
 --
 
@@ -75,7 +69,6 @@ CREATE TABLE `contrato` (
 
 LOCK TABLES `contrato` WRITE;
 /*!40000 ALTER TABLE `contrato` DISABLE KEYS */;
-INSERT INTO `contrato` (`id_contrato`, `id_unidad`, `id_inquilino`, `fecha_inicio`, `fecha_fin`, `monto_alquiler`, `ruta_contrato_digital`, `estado`, `estado_registro`, `usuario_creacion`, `fecha_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,4,2,'2026-09-01','2027-08-31',950.00,'','VIGENTE','ELIMINADO',1,'2026-09-01 22:23:41','0:0:0:0:0:0:0:1',1,'2026-09-01 22:40:48','0:0:0:0:0:0:0:1',1,'2026-09-01 22:44:00','0:0:0:0:0:0:0:1'),(2,5,3,'2026-09-01','2027-08-31',500.00,NULL,'VIGENTE','ELIMINADO',1,'2026-09-01 22:45:29','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-01 22:45:37','0:0:0:0:0:0:0:1'),(3,10,4,'2026-09-01','2026-12-18',670.00,'','VIGENTE','ELIMINADO',1,'2026-09-01 23:01:04','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-01 23:01:07','0:0:0:0:0:0:0:1'),(4,10,5,'2026-09-01','2026-12-31',670.00,'','VIGENTE','ACTIVO',1,'2026-09-01 23:01:23','0:0:0:0:0:0:0:1',1,'2026-09-27 02:12:52','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(5,13,4,'2026-06-01','2026-09-20',500.00,NULL,'VENCIDO','ELIMINADO',1,'2026-09-27 00:54:06','0:0:0:0:0:0:0:1',1,'2026-09-27 00:54:06','0:0:0:0:0:0:0:1',1,'2026-09-27 00:54:28','0:0:0:0:0:0:0:1'),(6,13,4,'2026-09-21','2026-10-10',520.00,NULL,'VIGENTE','ELIMINADO',1,'2026-09-27 00:54:18','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-27 00:54:28','0:0:0:0:0:0:0:1'),(8,15,4,'2026-09-27','2026-10-15',670.00,'','VIGENTE','ACTIVO',1,'2026-09-27 02:12:08','0:0:0:0:0:0:0:1',1,'2026-09-27 21:38:02','127.0.0.1',NULL,NULL,NULL),(9,18,4,'2026-09-28','2026-12-31',500.00,'','VIGENTE','ACTIVO',1,'2026-09-28 00:40:11','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `contrato` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,7 +119,6 @@ CREATE TABLE `detalle_liquidacion` (
 
 LOCK TABLES `detalle_liquidacion` WRITE;
 /*!40000 ALTER TABLE `detalle_liquidacion` DISABLE KEYS */;
-INSERT INTO `detalle_liquidacion` VALUES (1,1,'Alquiler','ALQUILER',950.00,NULL,NULL,'ACTIVO',1,'2026-09-26 23:38:39',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,2,'Alquiler','ALQUILER',670.00,NULL,NULL,'ACTIVO',1,'2026-09-26 23:38:39',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,1,'Consumo de luz','LUZ',45.05,NULL,NULL,'ACTIVO',1,'2026-09-26 23:38:39',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(5,2,'Consumo de luz','LUZ',50.00,NULL,NULL,'ACTIVO',1,'2026-09-26 23:38:39',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(7,1,'Consumo de agua','AGUA',30.00,NULL,NULL,'ACTIVO',1,'2026-09-26 23:38:39',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(8,2,'Consumo de agua','AGUA',10.00,NULL,NULL,'ACTIVO',1,'2026-09-26 23:38:39',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(10,2,'Otros conceptos','OTRO',100.00,NULL,NULL,'ACTIVO',1,'2026-09-26 23:38:39',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(11,3,'Alquiler 2026-10','ALQUILER',670.00,NULL,NULL,'ACTIVO',1,'2026-09-27 00:24:24','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(12,3,'Consumo de luz 2026-10','LUZ',450.00,3,NULL,'ACTIVO',1,'2026-09-27 00:24:24','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(13,3,'Reparacion de grifo (danio del inquilino)','MANTENIMIENTO',80.00,NULL,4,'ACTIVO',1,'2026-09-27 00:24:24','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(14,4,'Alquiler 2026-09','ALQUILER',670.00,NULL,NULL,'ACTIVO',1,'2026-09-27 02:26:58','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `detalle_liquidacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +165,6 @@ CREATE TABLE `inquilino` (
 
 LOCK TABLES `inquilino` WRITE;
 /*!40000 ALTER TABLE `inquilino` DISABLE KEYS */;
-INSERT INTO `inquilino` (`id_inquilino`, `tipo_documento`, `numero_documento`, `nombre_completo`, `telefono`, `email`, `direccion`, `estado_registro`, `usuario_creacion`, `fecha_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,'DNI','12345678','Rosa Medina','999999999','rosa@test.com',NULL,'ELIMINADO',1,'2026-09-01 22:23:32','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-01 22:39:59','0:0:0:0:0:0:0:1'),(2,'DNI','75058989','Marco Antonio Muñoz Melendez','929369150','marcoamm.0117@gmail.com','','ELIMINADO',2,'2026-09-01 22:37:05','0:0:0:0:0:0:0:1',2,'2026-09-01 22:37:09','0:0:0:0:0:0:0:1',1,'2026-09-01 22:40:53','0:0:0:0:0:0:0:1'),(3,'DNI','99999999','Prueba Integridad',NULL,NULL,NULL,'ELIMINADO',1,'2026-09-01 22:45:29','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-01 22:45:37','0:0:0:0:0:0:0:1'),(4,'DNI','75058989','Marco Antonio Muñoz Melendez','929369150','marcoamm.0117@gmail.com','','ACTIVO',1,'2026-09-01 23:00:42','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(5,'DNI','75058981','Maria Jesus Melendes Herrera','999999999','marcos99566898@gmail.com','','ACTIVO',1,'2026-09-27 01:56:19','0:0:0:0:0:0:0:1',1,'2026-09-27 02:03:23','0:0:0:0:0:0:0:1',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `inquilino` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +215,6 @@ CREATE TABLE `lectura_medidor` (
 
 LOCK TABLES `lectura_medidor` WRITE;
 /*!40000 ALTER TABLE `lectura_medidor` DISABLE KEYS */;
-INSERT INTO `lectura_medidor` (`id_lectura`, `id_medidor`, `periodo`, `lectura_anterior`, `lectura_actual`, `fecha_lectura`, `estado_registro`, `usuario_creacion`, `fecha_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,1,'2026-09',120.00,165.00,'2026-09-01','ACTIVO',1,'2026-09-01 22:23:50','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(3,4,'2026-09',3.00,33.00,'2026-09-02','ELIMINADO',1,'2026-09-02 14:43:22','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-27 00:16:41','0:0:0:0:0:0:0:1'),(4,1,'2026-11',100.00,150.00,'2026-11-01','ELIMINADO',1,'2026-09-27 00:04:47','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-27 00:05:04','0:0:0:0:0:0:0:1'),(5,2,'2026-09',200.00,500.00,'2026-09-30','ELIMINADO',1,'2026-09-27 00:14:11','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-27 00:14:41','0:0:0:0:0:0:0:1'),(6,2,'2026-09',200.00,500.00,'2026-09-30','ACTIVO',1,'2026-09-27 00:16:53','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(7,1,'2026-10',165.00,210.00,'2026-10-30','ACTIVO',1,'2026-09-27 00:24:24','0:0:0:0:0:0:0:1',1,'2026-09-27 02:20:14','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(8,2,'2026-10',500.00,800.00,'2026-10-30','ACTIVO',1,'2026-09-27 00:24:24','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(9,5,'2026-09',50.00,50.00,'2026-09-30','ACTIVO',1,'2026-09-27 02:16:32','0:0:0:0:0:0:0:1',1,'2026-09-27 02:19:58','0:0:0:0:0:0:0:1',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `lectura_medidor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,7 +269,6 @@ CREATE TABLE `liquidacion` (
 
 LOCK TABLES `liquidacion` WRITE;
 /*!40000 ALTER TABLE `liquidacion` DISABLE KEYS */;
-INSERT INTO `liquidacion` (`id_liquidacion`, `id_contrato`, `periodo`, `monto_alquiler`, `monto_luz`, `monto_agua`, `monto_otros`, `fecha_emision`, `fecha_vencimiento`, `estado`, `estado_registro`, `usuario_creacion`, `fecha_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,1,'2026-09',950.00,45.05,30.00,0.00,'2026-09-01','2026-10-15','PAGADO','ACTIVO',1,'2026-09-01 22:23:50','0:0:0:0:0:0:0:1',NULL,'2026-09-26 23:38:39',NULL,NULL,NULL,NULL),(2,4,'2026-09',670.00,50.00,10.00,100.00,'2026-09-02','2026-12-31','PAGADO','ACTIVO',1,'2026-09-02 14:44:24','0:0:0:0:0:0:0:1',1,'2026-09-27 02:26:56','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(3,4,'2026-10',670.00,450.00,0.00,80.00,'2026-09-27','2026-10-07','PAGADO','ACTIVO',1,'2026-09-27 00:24:24','0:0:0:0:0:0:0:1',1,'2026-09-27 02:34:27','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(4,8,'2026-09',670.00,0.00,0.00,0.00,'2026-09-27','2026-09-20','VENCIDO','ACTIVO',1,'2026-09-27 02:26:58','0:0:0:0:0:0:0:1',1,'2026-09-27 21:38:02','127.0.0.1',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `liquidacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -332,7 +321,6 @@ CREATE TABLE `mantenimiento` (
 
 LOCK TABLES `mantenimiento` WRITE;
 /*!40000 ALTER TABLE `mantenimiento` DISABLE KEYS */;
-INSERT INTO `mantenimiento` VALUES (1,NULL,NULL,'Pintado de fachada','2026-09-01','AMBOS','Pinturas XYZ',800.00,0.00,800.00,0,'ELIMINADO',1,'2026-09-01 22:24:05','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-27 01:32:41','127.0.0.1'),(2,3,NULL,'Cambio de tuberia','2026-09-02','MATERIAL','Ferreteria ABC',150.00,0.00,150.00,0,'ACTIVO',1,'2026-09-01 22:24:20','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(3,NULL,NULL,'Prueba desglose','2026-09-27','AMBOS',NULL,300.00,200.00,500.00,0,'ELIMINADO',1,'2026-09-27 00:04:47','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-27 00:05:04','0:0:0:0:0:0:0:1'),(4,10,NULL,'Reparacion de grifo (danio del inquilino)','2026-10-05','MANO_DE_OBRA',NULL,0.00,80.00,80.00,1,'ACTIVO',1,'2026-09-27 00:24:24','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `mantenimiento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -380,7 +368,6 @@ CREATE TABLE `medidor` (
 
 LOCK TABLES `medidor` WRITE;
 /*!40000 ALTER TABLE `medidor` DISABLE KEYS */;
-INSERT INTO `medidor` (`id_medidor`, `id_unidad`, `tipo_servicio`, `tipo_medidor`, `numero_serie`, `estado_registro`, `usuario_creacion`, `fecha_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,10,'LUZ','INDIVIDUAL','LUZ-301','ACTIVO',1,'2026-09-01 22:23:41','0:0:0:0:0:0:0:1',1,'2026-09-01 23:03:12','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(2,NULL,'LUZ','GENERAL','LUZ-GEN-01','ACTIVO',1,'2026-09-01 22:23:41','0:0:0:0:0:0:0:1',1,'2026-09-01 23:02:50','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(4,10,'LUZ','INDIVIDUAL','LUZ-3021','ELIMINADO',1,'2026-09-02 14:42:10','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-27 00:16:42','0:0:0:0:0:0:0:1'),(5,15,'LUZ','INDIVIDUAL','LUZ-TD-PS-2-001','ACTIVO',1,'2026-09-27 02:15:43','0:0:0:0:0:0:0:1',1,'2026-09-27 02:15:52','0:0:0:0:0:0:0:1',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `medidor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -456,7 +443,6 @@ CREATE TABLE `pago` (
 
 LOCK TABLES `pago` WRITE;
 /*!40000 ALTER TABLE `pago` DISABLE KEYS */;
-INSERT INTO `pago` VALUES (1,1,'2026-09-05',1025.05,'TRANSFERENCIA','TR-001','','ACTIVO',1,'2026-09-01 22:24:05','0:0:0:0:0:0:0:1',1,'2026-09-01 23:05:54','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(4,2,'2026-09-26',300.00,'EFECTIVO','PRUEBA-1',NULL,'ELIMINADO',1,'2026-09-26 23:52:36','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-26 23:52:58','0:0:0:0:0:0:0:1'),(5,2,'2026-09-26',530.00,'TRANSFERENCIA','PRUEBA-2',NULL,'ELIMINADO',1,'2026-09-26 23:52:48','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-26 23:52:48','0:0:0:0:0:0:0:1'),(6,3,'2026-09-27',1200.00,'EFECTIVO','GM-1','asdasd','ACTIVO',1,'2026-09-27 02:34:06','0:0:0:0:0:0:0:1',1,'2026-09-27 02:34:27','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(7,4,'2026-09-27',500.00,'EFECTIVO','TD-001','DASD','ACTIVO',1,'2026-09-27 10:28:49','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -500,7 +486,7 @@ CREATE TABLE `parametro_sistema` (
 
 LOCK TABLES `parametro_sistema` WRITE;
 /*!40000 ALTER TABLE `parametro_sistema` DISABLE KEYS */;
-INSERT INTO `parametro_sistema` (`id_parametro`, `clave`, `valor`, `descripcion`, `estado_registro`, `usuario_creacion`, `fecha_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,'DIAS_ALERTA_VENCIMIENTO','30','Dias de anticipacion para alertar el vencimiento de un contrato (RN-03)','ACTIVO',1,'2026-09-26 23:29:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,'CRITERIO_PRORRATEO','CONSUMO','Criterio de reparto del excedente de areas comunes: CONSUMO o AREA (S-04)','ACTIVO',1,'2026-09-26 23:29:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'PRUEBA_TEMP','1','temporal','ELIMINADO',1,'2026-09-27 00:04:30','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-27 00:05:04','0:0:0:0:0:0:0:1'),(5,'DIAS_VENCIMIENTO_LIQUIDACION','10','Dias entre la emision y el vencimiento de una liquidacion mensual','ACTIVO',1,'2026-09-27 00:23:40','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `parametro_sistema` (`id_parametro`, `clave`, `valor`, `descripcion`, `estado_registro`, `usuario_creacion`, `fecha_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,'DIAS_ALERTA_VENCIMIENTO','30','Dias de anticipacion para alertar el vencimiento de un contrato (RN-03)','ACTIVO',1,'2026-09-26 23:29:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,'CRITERIO_PRORRATEO','CONSUMO','Criterio de reparto del excedente de areas comunes: CONSUMO o AREA (S-04)','ACTIVO',1,'2026-09-26 23:29:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(5,'DIAS_VENCIMIENTO_LIQUIDACION','10','Dias entre la emision y el vencimiento de una liquidacion mensual','ACTIVO',1,'2026-09-27 00:23:40','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `parametro_sistema` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -530,7 +516,6 @@ CREATE TABLE `periodo_facturacion` (
 
 LOCK TABLES `periodo_facturacion` WRITE;
 /*!40000 ALTER TABLE `periodo_facturacion` DISABLE KEYS */;
-INSERT INTO `periodo_facturacion` VALUES (1,'2026-09','LIQUIDADO',1,'2026-09-26 23:29:41'),(2,'2026-10','LIQUIDADO',1,'2026-09-27 00:04:30'),(3,'2026-11','EN_PROGRESO',1,'2026-09-27 00:04:47');
 /*!40000 ALTER TABLE `periodo_facturacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -585,7 +570,6 @@ CREATE TABLE `prorrateo` (
 
 LOCK TABLES `prorrateo` WRITE;
 /*!40000 ALTER TABLE `prorrateo` DISABLE KEYS */;
-INSERT INTO `prorrateo` (`id_prorrateo`, `id_unidad`, `periodo`, `tipo_servicio`, `id_recibo`, `consumo_individual`, `consumo_comun_asignado`, `costo_unitario`, `monto_calculado`, `estado_registro`, `usuario_creacion`, `fecha_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,10,'2026-09','LUZ',2,30.00,90.00,1.5000,180.00,'ELIMINADO',1,'2026-09-01 22:23:50','0:0:0:0:0:0:0:1',1,'2026-09-27 00:14:11','0:0:0:0:0:0:0:1',1,'2026-09-27 00:14:40','0:0:0:0:0:0:0:1'),(2,10,'2026-09','LUZ',3,45.00,255.00,1.5000,450.00,'ACTIVO',1,'2026-09-27 00:16:53','0:0:0:0:0:0:0:1',1,'2026-09-27 22:26:01','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(3,10,'2026-10','LUZ',4,45.00,255.00,1.5000,450.00,'ACTIVO',1,'2026-09-27 00:24:24','0:0:0:0:0:0:0:1',1,'2026-09-27 00:24:54','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(4,15,'2026-09','LUZ',3,0.00,0.00,1.5000,0.00,'ACTIVO',1,'2026-09-27 02:23:38','0:0:0:0:0:0:0:1',1,'2026-09-27 22:26:01','0:0:0:0:0:0:0:1',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `prorrateo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -635,7 +619,6 @@ CREATE TABLE `recibo_servicio` (
 
 LOCK TABLES `recibo_servicio` WRITE;
 /*!40000 ALTER TABLE `recibo_servicio` DISABLE KEYS */;
-INSERT INTO `recibo_servicio` (`id_recibo`, `periodo`, `tipo_servicio`, `monto_total`, `fecha_emision`, `fecha_vencimiento`, `ruta_documento`, `estado_registro`, `usuario_creacion`, `fecha_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,'2026-10','LUZ',500.00,'2026-10-01',NULL,NULL,'ELIMINADO',1,'2026-09-27 00:04:30','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-27 00:05:04','0:0:0:0:0:0:0:1'),(2,'2026-09','LUZ',450.00,'2026-09-28',NULL,NULL,'ELIMINADO',1,'2026-09-27 00:14:11','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-27 00:14:41','0:0:0:0:0:0:0:1'),(3,'2026-09','LUZ',450.00,'2026-09-28',NULL,NULL,'ACTIVO',1,'2026-09-27 00:16:53','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(4,'2026-10','LUZ',450.00,'2026-10-28',NULL,NULL,'ACTIVO',1,'2026-09-27 00:24:24','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `recibo_servicio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -664,7 +647,6 @@ CREATE TABLE `refresh_token` (
 
 LOCK TABLES `refresh_token` WRITE;
 /*!40000 ALTER TABLE `refresh_token` DISABLE KEYS */;
-INSERT INTO `refresh_token` VALUES (2,1,'b9d71f1e-4e84-424d-a383-0827efd8f235','2026-09-02 06:23:24'),(3,1,'338e7f8c-7ffd-47f5-832a-c0b830f4b0eb','2026-09-02 06:23:32'),(4,1,'802f9226-e9cf-458c-84a5-c007bd756676','2026-09-02 06:23:41'),(5,1,'d72a9ec5-ee50-454c-be0d-bbf0376c376c','2026-09-02 06:23:41'),(6,1,'eaf50287-bde0-4446-8600-f8469ac4e3e0','2026-09-02 06:23:50'),(7,1,'0f6225ab-c5fd-4e20-91ca-d1725187bc2a','2026-09-02 06:24:06'),(8,1,'8f119f5a-2186-4d02-a143-1965cbb3c938','2026-09-02 06:24:20'),(9,2,'b6d39e34-b2bf-4802-b749-281d1f5ab3c0','2026-09-02 06:28:27'),(10,3,'4fcbac2b-2eff-467b-a88c-a58c3aede73b','2026-09-02 06:28:27'),(11,2,'d4bb659d-6664-4d26-aeb1-2374c974dcaa','2026-09-02 06:29:03'),(12,3,'caeef01a-550a-4926-9e3b-21b42872609a','2026-09-02 06:29:29'),(13,1,'14380117-cd99-4809-a48e-3217c70f8286','2026-09-02 06:33:11'),(14,2,'d7fe2439-e659-4c71-9692-090c58a15ad3','2026-09-02 06:34:53'),(15,1,'c7624f0f-1d5d-4a98-b414-ac6ce85d63e7','2026-09-02 06:39:33'),(16,1,'20f00dfb-84d1-46ea-a3cf-088afad3f69e','2026-09-02 06:43:50'),(17,1,'f934e6e0-28f6-45c9-9f85-1c39ee3a060f','2026-09-02 06:45:29'),(18,1,'7428a50e-4680-4962-9fe1-490ed7155de0','2026-09-02 06:45:37'),(19,1,'b8a9e208-ad4d-4ac5-93a7-54320b54b3d9','2026-09-02 06:53:01'),(20,1,'18c392f0-a107-4ada-aee4-abe26f7c402a','2026-09-02 07:05:01'),(21,1,'706e8a7c-d94d-4afb-a368-e8dcaf99514f','2026-09-02 22:41:32'),(22,1,'327c8d84-3696-4eaf-b62b-d816cb2b5fdd','2026-09-15 04:18:21'),(23,1,'151a5cb3-2fee-4364-a927-ba03f44c0a7d','2026-09-27 07:52:25'),(24,1,'e40d9f80-88b4-4e4a-b2d6-83a30e2ab787','2026-09-27 08:04:30'),(25,1,'90c95b1b-eaad-4b6a-afeb-d37e9f2d92ef','2026-09-27 08:23:40'),(26,1,'549b30ee-5225-4839-81ab-d9366f236ca7','2026-09-27 08:45:22'),(27,4,'277e5c97-06ec-4ec2-a48e-05845c7428d6','2026-09-27 08:45:43'),(28,4,'03005d37-f48f-4cdf-8c1d-d6289e4ad6da','2026-09-27 08:45:44'),(29,1,'787a60cc-c4f1-4fa7-b868-ff9523e78670','2026-09-27 08:47:09'),(30,1,'5876d471-68f5-4942-90e2-796619fe66c7','2026-09-27 08:48:41'),(31,1,'6e69dbad-cd52-4aa3-bcd9-d4d75414c774','2026-09-27 08:53:39'),(32,1,'442ff00c-2400-405d-84ec-8144b0b10d55','2026-09-27 09:34:40'),(33,2,'f6197738-f8a0-4cb0-9ff5-abd0f31100d5','2026-09-27 09:36:33'),(34,2,'233a7e1c-cfa9-4106-a3a2-a39ced440a35','2026-09-27 10:38:27'),(35,2,'0d440c88-970f-40e2-8d37-784c9879c06c','2026-09-27 10:54:45'),(36,2,'4ffe54a7-e80f-4c69-bfb5-e3921f8efab4','2026-09-27 11:06:56'),(37,2,'ad780301-3c6d-4dc8-b1e9-05b21cb6cc09','2026-09-27 11:14:41'),(38,2,'8c75de9f-9098-4ec1-80a7-6e7196eeb565','2026-09-27 11:15:10'),(39,2,'2f7a9255-aa40-4e6b-bd8c-c46992ceb009','2026-09-27 11:16:05'),(40,2,'c95a2f8e-1439-43e2-9986-c906061b7b4d','2026-09-27 11:16:21'),(41,2,'0c8fa063-a580-4659-afb1-c47712c46838','2026-09-27 11:21:19'),(42,2,'f1c75adf-f481-4f67-98d4-31a6d4df57ab','2026-09-27 11:24:44'),(43,1,'2ef2ab1b-7807-458d-8f4d-9ca7c137fdc6','2026-09-27 18:06:22'),(44,1,'beafc83c-b6c1-420a-a04d-4e8919c3dafb','2026-09-27 18:07:03'),(45,1,'dcf225ba-86c1-4738-b6ae-5b14b63a09b2','2026-09-27 18:09:12'),(46,1,'00b1ccd6-b3bd-4803-a1c8-c12f6272cc5c','2026-09-27 18:16:37'),(47,1,'33a4482f-79d1-49d5-88a4-a0794f0eab1f','2026-09-27 18:18:17'),(48,1,'ee38adcf-ac41-44f7-991f-84b6e5f69e05','2026-09-28 05:17:49'),(49,3,'7ea71369-2d02-4d94-bc58-c1e1b0f054a9','2026-09-28 06:20:13'),(50,5,'c1b7913a-fbe5-4211-b994-bb4418f34626','2026-09-28 07:08:49'),(51,1,'52046217-f1b3-4400-81d0-316fc18886b6','2026-09-28 07:27:40'),(52,1,'008c0ad7-32ec-40da-8859-6f43049ba5ec','2026-09-28 07:30:03'),(53,1,'006d4032-5277-4069-afee-c6af729f3182','2026-09-28 07:32:21');
 /*!40000 ALTER TABLE `refresh_token` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -784,7 +766,6 @@ CREATE TABLE `unidad` (
 
 LOCK TABLES `unidad` WRITE;
 /*!40000 ALTER TABLE `unidad` DISABLE KEYS */;
-INSERT INTO `unidad` (`id_unidad`, `piso`, `numero_unidad`, `area_m2`, `caracteristicas`, `estado`, `estado_registro`, `usuario_creacion`, `fecha_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (3,3,'301',65.50,'2 dorm','DISPONIBLE','ELIMINADO',1,'2026-09-01 22:23:32','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-01 22:24:06','0:0:0:0:0:0:0:1'),(4,2,'GM',2.00,'Un cuarto amplio','DISPONIBLE','ELIMINADO',1,'2026-09-01 22:40:26','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-01 22:42:46','0:0:0:0:0:0:0:1'),(5,9,'901',60.00,NULL,'DISPONIBLE','ELIMINADO',1,'2026-09-01 22:45:29','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-01 22:45:37','0:0:0:0:0:0:0:1'),(10,1,'GM',40.00,'','OCUPADO','ACTIVO',1,'2026-09-01 22:53:01','0:0:0:0:0:0:0:1',1,'2026-09-27 10:10:19','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(13,3,'em',40.00,'Prueba','DISPONIBLE','ACTIVO',1,'2026-09-01 22:56:22','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(15,2,'TD',40.00,'Prueba','OCUPADO','ACTIVO',1,'2026-09-27 01:54:01','0:0:0:0:0:0:0:1',1,'2026-09-27 02:12:08','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(16,2,'TD-1',40.00,'Prueba caracteristicas','DISPONIBLE','ACTIVO',1,'2026-09-27 10:20:08','0:0:0:0:0:0:0:1',NULL,NULL,NULL,NULL,NULL,NULL),(17,1,'CUARTO 1',40.00,'Esto es una prueba','DISPONIBLE','ELIMINADO',1,'2026-09-28 00:38:37','0:0:0:0:0:0:0:1',NULL,NULL,NULL,1,'2026-09-28 00:38:46','0:0:0:0:0:0:0:1'),(18,1,'CUARTO 1',40.00,'Prueba','OCUPADO','ACTIVO',1,'2026-09-28 00:38:57','0:0:0:0:0:0:0:1',1,'2026-09-28 00:40:11','0:0:0:0:0:0:0:1',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `unidad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -838,7 +819,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` (`id_usuario`, `id_rol`, `nombre_usuario`, `password_hash`, `nombre_completo`, `email`, `estado`, `mfa_habilitado`, `mfa_secret`, `mfa_confirmado`, `fecha_creacion`, `estado_registro`, `usuario_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,1,'admin','$2a$10$uT7TfwgtEZbpwY5nm0O/l.gUiPxjnDjyEZAO3Tn4.U8E/NzoLsOw6','Administrador General','admin@milanoasociados.com','ACTIVO',1,'OLOAPSJCKHUAM4Y3R2WM4Z3ZQKD5UKEF',1,'2026-09-01 21:34:14','ACTIVO',NULL,NULL,1,'2026-09-27 23:30:03','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(2,2,'cobranzas','$2a$10$zv/Hb.ybx9fVE3dBR6PXJe7iuKDRWfAUM0TBdQsuDLiW.OY.sRC1m','Encargado de Cobranzas','cobranzas@milanoasociados.com','ACTIVO',1,'PHQ4EFZLCZWW2YX3BM5XDRLISEZWHAX2',1,'2026-09-01 22:28:20','ACTIVO',NULL,NULL,2,'2026-09-27 03:24:44','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(3,3,'mantenimiento','$2a$10$nB5C.7zBcb9RC5Wgwz5iZOPmy9yB/1C5A6k8KQHWxz4Jn04gbsN.i','Encargado de Mantenimiento','mantenimiento@milanoasociados.com','ACTIVO',1,'2VGEM5HSKRBLAQ6DR53NDFD46HFG7YVX',1,'2026-09-01 22:28:20','ACTIVO',NULL,NULL,3,'2026-09-27 22:20:12','0:0:0:0:0:0:0:1',NULL,NULL,NULL),(4,3,'prueba.qa','$2a$10$Y.ZHK0Sn5tPKCCqph0spj.xGAPCEtCA5T39NY7Z2.qEFRYjb.reXC','Usuario QA Editado','qa@dataverse.test','INACTIVO',1,NULL,0,'2026-09-27 00:45:22','ELIMINADO',1,'0:0:0:0:0:0:0:1',1,'2026-09-27 00:47:09','0:0:0:0:0:0:0:1',1,'2026-09-27 00:48:41','0:0:0:0:0:0:0:1'),(5,5,'consulta','$2a$10$DauAP83S.l5N7VYPlqIyI.NAsMqaEd5XGrf6m8Ef.8SiwDIwczbaO','Marco Antonio Muñoz Melendez','oti125@oefa.gob.pe','ACTIVO',1,'4XSNJIL6MSXWKL7HLV474DYI4Y5PBRVM',1,'2026-09-27 23:08:04','ACTIVO',1,'0:0:0:0:0:0:0:1',5,'2026-09-27 23:08:49','0:0:0:0:0:0:0:1',NULL,NULL,NULL);
+INSERT INTO `usuario` (`id_usuario`, `id_rol`, `nombre_usuario`, `password_hash`, `nombre_completo`, `email`, `estado`, `mfa_habilitado`, `mfa_secret`, `mfa_confirmado`, `fecha_creacion`, `estado_registro`, `usuario_creacion`, `ip_creacion`, `usuario_actualizacion`, `fecha_actualizacion`, `ip_actualizacion`, `usuario_eliminacion`, `fecha_eliminacion`, `ip_eliminacion`) VALUES (1,1,'admin','$2b$10$dFSjXLIi2JxjBAn75pqK9ed.BCXDZW1u0fH0HTnT.83sl8NdrWHJq','Administrador General','admin@dataverse.test','ACTIVO',1,NULL,0,'2026-09-01 21:34:14','ACTIVO',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,2,'cobranzas','$2b$10$XluJN6dwIN4iGZeEILKgieOOHiKv4O2Z1BuZMsMAYpfYh6OA15xS.','Encargado de Cobranzas','cobranzas@dataverse.test','ACTIVO',1,NULL,0,'2026-09-01 22:28:20','ACTIVO',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,3,'mantenimiento','$2b$10$wXDyvIOONPgUdY77XdAZn.csP9Du1gCArqJOX6h72VS9a5NqNyzeO','Encargado de Mantenimiento','mantenimiento@dataverse.test','ACTIVO',1,NULL,0,'2026-09-01 22:28:20','ACTIVO',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(5,5,'consulta','$2b$10$NzAUYFxduT9t.1L7/EZEze3VCg0yCynsqbSEWDS7/SpAmJ2y7hzBm','Usuario de Consulta (solo lectura)','consulta@dataverse.test','ACTIVO',1,NULL,0,'2026-09-27 23:08:04','ACTIVO',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
